@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.conf import settings
+from rest_framework.exceptions import ValidationError
 
 
 # Create your models here.
@@ -64,5 +65,26 @@ class Ticket(models.Model):
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name='tickets')
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='tickets')
 
+    class Meta:
+        unique_together = ('row', 'seat', 'flight',)
+
     def __str__(self):
         return f"Ticket for {self.flight} on row {self.row}, seat {self.seat}"
+
+    def clean(self):
+        airplane = self.flight.airplane
+        errors = {}
+
+        if self.row > airplane.rows:
+            errors['row'] = f"Row {self.row} is invalid. Airplane has only {airplane.rows} rows."
+        if self.seat > airplane.seats_in_row:
+            errors['seat'] = f"Seat {self.seat} is invalid. Airplane has only {airplane.seats_in_row} seats."
+
+        if errors:
+            raise ValidationError(errors)
+
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
