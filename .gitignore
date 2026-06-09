@@ -383,3 +383,5 @@ pyrightconfig.json
 /dataSources/
 /dataSources.local.xml
 .idea
+
+testdata/

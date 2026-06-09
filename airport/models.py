@@ -49,6 +49,9 @@ class Flight(models.Model):
     arrival_time = models.DateTimeField()
     crew = models.ManyToManyField(Crew, related_name='flights')
 
+    class Meta:
+        ordering = ('departure_time',)
+
     def __str__(self):
         return f"Flight from {self.route.source} to {self.route.destination} at {self.departure_time}"
 
