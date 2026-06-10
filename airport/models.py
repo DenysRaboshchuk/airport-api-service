@@ -42,6 +42,10 @@ class Crew(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
 class Flight(models.Model):
     route = models.ForeignKey(Route, on_delete=models.CASCADE, related_name='flights')
     airplane = models.ForeignKey(Airplane, on_delete=models.CASCADE, related_name='flights')
@@ -58,6 +62,9 @@ class Flight(models.Model):
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders')
+
+    class Meta:
+        ordering = ('created_at',)
 
     def __str__(self):
         return f"Order by {self.user} on {self.created_at}"
