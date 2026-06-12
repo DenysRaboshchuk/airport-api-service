@@ -2,15 +2,18 @@ from django.shortcuts import render
 from rest_framework import viewsets
 
 from airport.models import Flight, Airplane, Airport, Route, Crew, Order, Ticket
+from airport.permissions import IsAdminOrReadOnly
 from airport.serializers import FlightListSerializer, AirplaneListSerializer, AirportSerializer, \
     RouteSerializer, CrewSerializer, OrderSerializer, TicketSerializer, AirplaneDetailSerializer, \
     AirplaneCreateSerializer, RouteCreateSerializer, FlightDetailSerializer, FlightCreateSerializer, \
     OrderDetailSerializer, OrderCreateSerializer
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 
 
 class AirplaneViewSet(viewsets.ModelViewSet):
     queryset = Airplane.objects.all()
     serializer_class = AirplaneListSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -23,10 +26,12 @@ class AirplaneViewSet(viewsets.ModelViewSet):
 class AirportViewSet(viewsets.ModelViewSet):
     queryset = Airport.objects.all()
     serializer_class = AirportSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 class RouteViewSet(viewsets.ModelViewSet):
     queryset = Route.objects.all()
     serializer_class = RouteSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -37,10 +42,12 @@ class RouteViewSet(viewsets.ModelViewSet):
 class CrewViewSet(viewsets.ModelViewSet):
     queryset = Crew.objects.all()
     serializer_class = CrewSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 class FlightViewSet(viewsets.ModelViewSet):
     queryset = Flight.objects.all().select_related('airplane', 'route', 'route__source', 'route__destination').prefetch_related('crew', 'tickets')
     serializer_class = FlightListSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -53,6 +60,7 @@ class FlightViewSet(viewsets.ModelViewSet):
 class OrderViewset(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         if self.action == 'retrieve':

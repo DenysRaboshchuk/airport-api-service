@@ -8,8 +8,8 @@ router.register(r"airplane", AirplaneViewSet)
 router.register(r"airport", AirportViewSet)
 router.register(r"route", RouteViewSet)
 router.register(r"crew", CrewViewSet)
-router.register(r"flights", FlightViewSet)
-router.register(r"orders", OrderViewset)
+router.register(r"flight", FlightViewSet)
+router.register(r"order", OrderViewset)
 
 
 app_name = "airport"
