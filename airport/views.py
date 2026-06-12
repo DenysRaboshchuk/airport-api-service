@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 
+from airport.filters import FlightFilter, AirplaneFilter, AirportFilter
 from airport.models import Flight, Airplane, Airport, Route, Crew, Order, Ticket
 from airport.permissions import IsAdminOrReadOnly
 from airport.serializers import FlightListSerializer, AirplaneListSerializer, AirportSerializer, \
@@ -14,6 +15,7 @@ class AirplaneViewSet(viewsets.ModelViewSet):
     queryset = Airplane.objects.all()
     serializer_class = AirplaneListSerializer
     permission_classes = [IsAdminOrReadOnly]
+    filterset_class = AirplaneFilter
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -27,6 +29,7 @@ class AirportViewSet(viewsets.ModelViewSet):
     queryset = Airport.objects.all()
     serializer_class = AirportSerializer
     permission_classes = [IsAdminOrReadOnly]
+    filterset_class = AirportFilter
 
 class RouteViewSet(viewsets.ModelViewSet):
     queryset = Route.objects.all()
@@ -48,6 +51,7 @@ class FlightViewSet(viewsets.ModelViewSet):
     queryset = Flight.objects.all().select_related('airplane', 'route', 'route__source', 'route__destination').prefetch_related('crew', 'tickets')
     serializer_class = FlightListSerializer
     permission_classes = [IsAdminOrReadOnly]
+    filterset_class = FlightFilter
 
     def get_serializer_class(self):
         if self.action == 'retrieve':

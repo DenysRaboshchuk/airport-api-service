@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 from datetime import timedelta
 from pathlib import Path
+
+import django_filters
 from django.core.management.utils import get_random_secret_key
 import environ
 import os
@@ -44,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'airport',
-    'user'
+    'user',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -132,6 +135,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'PAGE_SIZE': 10,
 }
 
