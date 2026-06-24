@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'airport',
     'user',
-    'django_filters'
+    'django_filters',
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
@@ -144,3 +146,10 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = "user.User"
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Airport API',
+    'DESCRIPTION': 'App for ordering tickets in Airport',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}

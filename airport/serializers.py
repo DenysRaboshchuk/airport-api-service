@@ -16,7 +16,7 @@ class AirplaneListSerializer(serializers.ModelSerializer):
         model = Airplane
         fields = ('id', 'name', 'amount_of_seats', 'airplane_type_name')
 
-    def get_amount_of_seats(self, obj):
+    def get_amount_of_seats(self, obj) -> int:
         return obj.rows * obj.seats_in_row
 
 class AirplaneCreateSerializer(serializers.ModelSerializer):
@@ -42,10 +42,10 @@ class RouteSerializer(serializers.ModelSerializer):
         model = Route
         fields = ('id', 'source', 'destination')
 
-    def get_source(self, obj):
+    def get_source(self, obj) -> str:
         return f"{obj.source.name} ({obj.source.closest_big_city})"
 
-    def get_destination(self, obj):
+    def get_destination(self, obj) -> str:
         return f"{obj.destination.name} ({obj.destination.closest_big_city})"
 
 class RouteCreateSerializer(serializers.ModelSerializer):
@@ -67,10 +67,10 @@ class FlightListSerializer(serializers.ModelSerializer):
         model = Flight
         fields = ('id', 'departure_time', 'arrival_time', 'route', 'airplane', 'crew', 'tickets_available',)
 
-    def get_route(self, obj):
+    def get_route(self, obj) -> str:
         return f"{obj.route.source} -> {obj.route.destination}"
 
-    def get_tickets_available(self, obj):
+    def get_tickets_available(self, obj) -> int:
         return obj.airplane.rows * obj.airplane.seats_in_row - obj.tickets.count()
 
 class TicketSerializer(serializers.ModelSerializer):
@@ -105,7 +105,7 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ('id', 'created_at', 'tickets_count')
 
-    def get_tickets_count(self, obj):
+    def get_tickets_count(self, obj) -> int:
         return obj.tickets.count()
 
 class OrderDetailSerializer(serializers.ModelSerializer):
