@@ -52,6 +52,8 @@ class FlightViewSet(viewsets.ModelViewSet):
     serializer_class = FlightListSerializer
     permission_classes = [IsAdminOrReadOnly]
     filterset_class = FlightFilter
+    search_fields = ['route__source__name', 'route__destination__name', 'route__source__closest_big_city', 'route__destination__closest_big_city']
+    ordering_fields = ['departure_time', 'arrival_time']
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
