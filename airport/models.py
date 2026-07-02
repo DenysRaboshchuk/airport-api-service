@@ -8,6 +8,9 @@ from rest_framework.exceptions import ValidationError
 class AirplaneType(models.Model):
     name = models.CharField(max_length=255)
 
+    class Meta:
+        ordering = ('name',)
+
     def __str__(self):
         return self.name
 
@@ -17,12 +20,18 @@ class Airplane(models.Model):
     seats_in_row = models.IntegerField()
     airplane_type = models.ForeignKey(AirplaneType, on_delete=models.CASCADE, related_name='airplanes')
 
+    class Meta:
+        ordering = ('name',)
+
     def __str__(self):
         return f"Airplane: {self.name}"
 
 class Airport(models.Model):
     name = models.CharField(max_length=255)
     closest_big_city = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ('name',)
 
     def __str__(self):
         return f"Airport: {self.name} ({self.closest_big_city})"
@@ -31,6 +40,9 @@ class Route(models.Model):
     source = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name='outgoing_routes')
     destination = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name='incoming_routes')
     distance = models.IntegerField()
+
+    class Meta:
+        ordering = ('source',)
 
     def __str__(self):
         return f"Route from {self.source} to {self.destination}. Distance: {self.distance} km"
@@ -80,6 +92,7 @@ class Ticket(models.Model):
 
     class Meta:
         unique_together = ('row', 'seat', 'flight',)
+        ordering = ('row', 'seat', 'flight',)
 
     def __str__(self):
         return f"Ticket for {self.flight} on row {self.row}, seat {self.seat}"
