@@ -9,6 +9,7 @@ from user.serializers import EmailTokenObtainPairSerializer, UserRegisterSeriali
 class EmailTokenObtainPairView(TokenObtainPairView):
     serializer_class = EmailTokenObtainPairSerializer
 
+
 class UserRegisterView(generics.CreateAPIView):
     serializer_class = UserRegisterSerializer
     permission_classes = [AllowAny]

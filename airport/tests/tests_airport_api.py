@@ -11,7 +11,8 @@ from airport.models import (
     Route,
     Flight,
     Order,
-    Ticket, Crew,
+    Ticket,
+    Crew,
 )
 
 ORDER_LIST_URL = reverse("airport:order-list")
@@ -24,8 +25,9 @@ def create_airport(name="Test Airport", city="Test City"):
     return Airport.objects.create(name=name, closest_big_city=city)
 
 
-def create_crew(first_name = "TestName", last_name = "TestLastName"):
+def create_crew(first_name="TestName", last_name="TestLastName"):
     return Crew.objects.create(first_name=first_name, last_name=last_name)
+
 
 def create_airplane_type(name="Boeing 77777"):
     return AirplaneType.objects.create(name=name)
@@ -44,7 +46,9 @@ def create_route(source=None, destination=None, distance=500):
         source = create_airport(name="Source Airport", city="Source City")
     if destination is None:
         destination = create_airport(name="Destination Airport", city="Dest City")
-    return Route.objects.create(source=source, destination=destination, distance=distance)
+    return Route.objects.create(
+        source=source, destination=destination, distance=distance
+    )
 
 
 def create_flight(route=None, airplane=None):
@@ -71,6 +75,7 @@ def create_order(user, flight=None):
 # ============================================================
 # Unauthenticated tests
 # ============================================================
+
 
 class UnauthenticatedOrderTests(TestCase):
     def setUp(self):
@@ -114,6 +119,7 @@ class UnauthenticatedFlightTests(TestCase):
 # Authenticated user tests
 # ============================================================
 
+
 class AuthenticatedOrderTests(TestCase):
     def setUp(self):
         self.client = APIClient()
@@ -138,22 +144,14 @@ class AuthenticatedOrderTests(TestCase):
 
     def test_create_order_with_tickets(self):
         flight = create_flight()
-        payload = {
-            "tickets": [
-                {"row": 5, "seat": 3, "flight": flight.id}
-            ]
-        }
+        payload = {"tickets": [{"row": 5, "seat": 3, "flight": flight.id}]}
         response = self.client.post(ORDER_LIST_URL, payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Order.objects.filter(user=self.user).count(), 1)
 
     def test_create_order_assigns_current_user(self):
         flight = create_flight()
-        payload = {
-            "tickets": [
-                {"row": 5, "seat": 3, "flight": flight.id}
-            ]
-        }
+        payload = {"tickets": [{"row": 5, "seat": 3, "flight": flight.id}]}
         self.client.post(ORDER_LIST_URL, payload, format="json")
         order = Order.objects.get(user=self.user)
         self.assertEqual(order.user, self.user)
@@ -165,7 +163,11 @@ class AuthenticatedOrderTests(TestCase):
 
         payload = {
             "tickets": [
-                {"row": taken_ticket.row, "seat": taken_ticket.seat, "flight": flight.id}
+                {
+                    "row": taken_ticket.row,
+                    "seat": taken_ticket.seat,
+                    "flight": flight.id,
+                }
             ]
         }
         response = self.client.post(ORDER_LIST_URL, payload, format="json")
@@ -173,21 +175,13 @@ class AuthenticatedOrderTests(TestCase):
 
     def test_ticket_row_validation(self):
         flight = create_flight()
-        payload = {
-            "tickets": [
-                {"row": 999, "seat": 1, "flight": flight.id}
-            ]
-        }
+        payload = {"tickets": [{"row": 999, "seat": 1, "flight": flight.id}]}
         response = self.client.post(ORDER_LIST_URL, payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_ticket_seat_validation(self):
         flight = create_flight()
-        payload = {
-            "tickets": [
-                {"row": 1, "seat": 999, "flight": flight.id}
-            ]
-        }
+        payload = {"tickets": [{"row": 1, "seat": 999, "flight": flight.id}]}
         response = self.client.post(ORDER_LIST_URL, payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -195,6 +189,7 @@ class AuthenticatedOrderTests(TestCase):
 # ============================================================
 # Admin tests
 # ============================================================
+
 
 class AdminFlightTests(TestCase):
     def setUp(self):

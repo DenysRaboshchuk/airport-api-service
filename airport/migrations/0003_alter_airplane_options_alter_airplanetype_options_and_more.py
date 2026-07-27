@@ -6,32 +6,32 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('airport', '0002_initial'),
+        ("airport", "0002_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='airplane',
-            options={'ordering': ('name',)},
+            name="airplane",
+            options={"ordering": ("name",)},
         ),
         migrations.AlterModelOptions(
-            name='airplanetype',
-            options={'ordering': ('name',)},
+            name="airplanetype",
+            options={"ordering": ("name",)},
         ),
         migrations.AlterModelOptions(
-            name='airport',
-            options={'ordering': ('name',)},
+            name="airport",
+            options={"ordering": ("name",)},
         ),
         migrations.AlterModelOptions(
-            name='crew',
-            options={'ordering': ('last_name',)},
+            name="crew",
+            options={"ordering": ("last_name",)},
         ),
         migrations.AlterModelOptions(
-            name='route',
-            options={'ordering': ('source',)},
+            name="route",
+            options={"ordering": ("source",)},
         ),
         migrations.AlterModelOptions(
-            name='ticket',
-            options={'ordering': ('row', 'seat', 'flight')},
+            name="ticket",
+            options={"ordering": ("row", "seat", "flight")},
         ),
     ]

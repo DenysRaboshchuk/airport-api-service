@@ -1,7 +1,13 @@
 from rest_framework.routers import DefaultRouter
 
-from airport.views import AirplaneViewSet, AirportViewSet, RouteViewSet, CrewViewSet, \
-    FlightViewSet, OrderViewset
+from airport.views import (
+    AirplaneViewSet,
+    AirportViewSet,
+    RouteViewSet,
+    CrewViewSet,
+    FlightViewSet,
+    OrderViewset,
+)
 
 router = DefaultRouter()
 router.register(r"airplane", AirplaneViewSet)

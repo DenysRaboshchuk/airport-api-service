@@ -19,18 +19,30 @@ from django.contrib import admin
 from django.urls import path, include
 
 from rest_framework_simplejwt.views import TokenRefreshView
-from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 
 from user.views import EmailTokenObtainPairView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/v1/', include('airport.urls', namespace='airport')),
-    path('api/v1/auth/', include('rest_framework.urls')),
-    path('api/v1/token/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/v1/user/', include('user.urls', namespace='user')),
+    path("admin/", admin.site.urls),
+    path("api/v1/", include("airport.urls", namespace="airport")),
+    path("api/v1/auth/", include("rest_framework.urls")),
+    path("api/v1/token/", EmailTokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/v1/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/v1/user/", include("user.urls", namespace="user")),
     path("api/v1/doc/", SpectacularAPIView.as_view(), name="schema"),
-    path("api/v1/doc/swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
-    path("api/v1/doc/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
+    path(
+        "api/v1/doc/swagger/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path(
+        "api/v1/doc/redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
+    ),
 ]
